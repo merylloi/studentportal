@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header>
+            <h1>Student Dashboard</h1>
+        </header>
+        <section class="welcome-section">
+            <h2 id="welcomeMessage"></h2>
+            <p>Here is your dashboard overview:</p>
+        </section>
+        <section class="student-info">
+            <h3>Your Details</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Information Technology</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Student ID</td>
+                        <td id="studentID"></td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td id="email"></td>
+                    </tr>
+                    <tr>
+                        <td>Phone Number</td>
+                        <td id="phone"></td>
+                    </tr>
+                    <tr>
+                        <td>Gender</td>
+                        <td id="gender"></td>
+                    </tr>
+                    <tr>
+                        <td>Course</td>
+                        <td id="course"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <div class="action-buttons">
+            <button onclick="alert('Update Profile feature coming soon!')">Update Profile</button>
+            <button onclick="alert('View Grades feature coming soon!')">View Grades</button>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <script>
+
+        const studentData = JSON.parse(localStorage.getItem('studentData'));
+
+        if (studentData) {
+            document.getElementById('welcomeMessage').innerText = `Welcome, ${studentData.fullName}!`;
+            document.getElementById('studentID').innerText = studentData.studentID;
+            document.getElementById('email').innerText = studentData.email;
+            document.getElementById('phone').innerText = studentData.phone || 'Not provided';
+            document.getElementById('gender').innerText = studentData.gender;
+            document.getElementById('course').innerText = studentData.course;
+        } else {
+            alert('No user data found. Please register first.');
+            window.location.href = 'register.html';
+        }
+
+        function logout() {
+            localStorage.removeItem('studentData'); 
+            alert('You have logged out.');
+            window.location.href = 'register.html'; 
+        }
+    </script>
+</body>
+</html>

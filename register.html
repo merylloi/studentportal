@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <link rel="stylesheet" href="register.css">
+    <style>
+        /* Add styles for validation */
+        .error {
+            border: 2px solid red;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: -8px;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Student Registration Form</h1>
+        <form id="registerForm">
+            <label for="student-id">Student ID Number:</label>
+            <input type="text" id="student-id" name="student-id" placeholder="Enter your Student ID Number" required>
+            <div id="student-id-error" class="error-message"></div>
+            
+            <label for="full-name">Full Name:</label>
+            <input type="text" id="full-name" name="full-name" placeholder="Enter your full name" required>
+            <div id="full-name-error" class="error-message"></div>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <div id="email-error" class="error-message"></div>
+            
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+            <div id="phone-error" class="error-message"></div>
+            
+            <label>Gender:</label>
+            <div class="gender-options">
+                <input type="radio" id="male" name="gender" value="Male" required>
+                <label for="male">Male</label>
+                <input type="radio" id="female" name="gender" value="Female" required>
+                <label for="female">Female</label>
+                <input type="radio" id="other" name="gender" value="Other" required>
+                <label for="other">Other</label>
+            </div>
+            <div id="gender-error" class="error-message"></div>
+            
+            <label for="course">Course:</label>  <select id="course" name="course" required>
+                <option value="" disabled selected>Select your course</option>
+                <option value="Bachelor of Science in Information Technology">Bachelor of Science in Information Technology</option>
+                <option value="Bachelor of Science in Computer Science">Bachelor of Science in Computer Science</option>
+                <option value="Bachelor of Science in Psychology">Bachelor of Science in Psychology</option>
+            </select>
+            
+            <div id="course-error" class="error-message"></div>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <div id="password-error" class="error-message"></div>
+            
+            <label for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+            <div id="confirm-password-error" class="error-message"></div>
+            
+            <button type="button" id="registerButton">Register</button>
+        </form>
+                <p>Already have an account? <a href="login.html">Login here</a></p>
+    </div>
+
+    <script>
+        document.getElementById('registerButton').addEventListener('click', function () {
+            const errorMessages = document.querySelectorAll('.error-message');
+            errorMessages.forEach((msg) => (msg.innerText = ''));
+
+            const inputs = document.querySelectorAll('input, select');
+            let isValid = true;
+
+            inputs.forEach((input) => {
+                if (input.type !== 'radio' && !input.value.trim()) {
+                    input.classList.add('error');
+                    const errorId = `${input.id}-error`;
+                    document.getElementById(errorId).innerText = `Please fill out this field.`;
+                    isValid = false;
+                } else {
+                    input.classList.remove('error');
+                }
+            });
+
+            const genderInputs = document.querySelectorAll('input[name="gender"]');
+            const genderSelected = Array.from(genderInputs).some((radio) => radio.checked);
+            if (!genderSelected) {
+                document.getElementById('gender-error').innerText = 'Please select a gender.';
+                isValid = false;
+            }
+
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            if (password !== confirmPassword) {
+                document.getElementById('confirm-password-error').innerText =
+                    'Passwords do not match.';
+                isValid = false;
+            }
+
+            if (isValid) {
+                const studentID = document.getElementById('student-id').value;
+                const fullName = document.getElementById('full-name').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const gender = document.querySelector('input[name="gender"]:checked').value;
+                const course = document.getElementById('course').value;
+
+                localStorage.setItem(
+                    'studentData',
+                    JSON.stringify({ studentID, fullName, email, phone, gender, course })
+                );
+
+                alert('Registration Successful!');
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('Please fill out all required fields correctly.');
+            }
+        });
+    </script>
+</body>
+</html>
